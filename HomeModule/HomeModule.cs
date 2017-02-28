@@ -39,6 +39,13 @@ namespace University
                 return View["course.cshtml", model];
             };
 
+            Post["course/add_student"] = _ => {
+                Student student = Student.Find(Request.Form["student-id"]);
+                Course course = Course.Find(Request.Form["course-id"]);
+                course.AddStudent(student);
+                return View["success.cshtml"];
+            };
+// for students
             Get["/students"] = _ => {
                 List<Student> AllStudents = Student.GetAll();
                 return View["students.cshtml", AllStudents];
@@ -73,12 +80,51 @@ namespace University
                return View["success.cshtml"];
            };
 
-           Post["course/add_student"] = _ => {
-               Student student = Student.Find(Request.Form["student-id"]);
-               Course course = Course.Find(Request.Form["course-id"]);
-               course.AddStudent(student);
-               return View["success.cshtml"];
+// for department
+           Get["/departments"] = _ => {
+               List<Department> AllDepartments = Department.GetAll();
+               return View["departments.cshtml", AllDepartments];
            };
+
+           Get["/departments/new"] = _ => {
+               return View["department_new.cshtml"];
+           };
+
+           Post["/departments/new"] = _ => {
+               Department newDepartment= new Department(Request.Form["department-name"]);
+               newDepartment.Save();
+               List<Department> AllDepartments = Department.GetAll();
+               return View["departments.cshtml", AllDepartments];
+           };
+
+           Get["departments/{id}"] = parameters => {
+               Dictionary<string, object> model = new Dictionary<string, object>();
+               Department SelectedDepartment = Department.Find(parameters.id);
+               List<Student> DepartmentStudents = SelectedDepartment.GetStudents();
+               List<Student> AllStudents = Student.GetAll();
+               List<Course> DepartmentCourses = SelectedDepartment.GetCourses();
+               List<Course> AllCourses = Course.GetAll();
+               model.Add("department", SelectedDepartment);
+               model.Add("departmentStudents", DepartmentStudents);
+               model.Add("allStudents", AllStudents);
+               model.Add("departmentCourses", DepartmentCourses);
+               model.Add("allCourses", AllCourses);
+               return View["department.cshtml", model];
+           };
+
+           Post["department/add_course"] = _ => {
+              Course course = Course.Find(Request.Form["course-id"]);
+              Department department = Department.Find(Request.Form["department-id"]);
+              department.AddCourse(course);
+              return View["success.cshtml"];
+          };
+
+          Post["department/add_student"] = _ => {
+              Student student = Student.Find(Request.Form["student-id"]);
+              Department department = Department.Find(Request.Form["department-id"]);
+              department.AddStudent(student);
+              return View["success.cshtml"];
+          };
 
         }
     }

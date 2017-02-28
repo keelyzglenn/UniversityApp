@@ -1,0 +1,49 @@
+<h2>@Model["department"].GetName()</h2>
+<hr />
+@if (@Model["departmentStudents"].Count != 0)
+{
+  <h4>Here are all the students in this department:</h4>
+  <ul>
+    @foreach (var student in @Model["departmentStudents"])
+    {
+      <li>@student.GetName()</li>
+    }
+  </ul>
+}
+@if (@Model["departmentCourses"].Count != 0)
+{
+  <h4>Here are all the courses in this department:</h4>
+  <ul>
+    @foreach (var course in @Model["departmentCourses"])
+    {
+      <li>@course.GetName()</li>
+    }
+  </ul>
+}
+
+
+<h4>Add a student to this department:</h4>
+<form action='/department/add_student' method='post'>
+  <input id='department-id' name='department-id' type='hidden' value='@Model["department"].GetId()'>
+  <label for='student-id'>Select a student</label>
+  <select id='student-id' name='student-id' type='text'>
+    @foreach (var student in @Model["allStudents"])
+    {
+      <option value='@student.GetId()'>@student.GetName()</option>
+    }
+  </select>
+  <button type='submit'>Add</button>
+</form>
+
+<h4>Add a course to this department:</h4>
+<form action='/department/add_course' method='post'>
+  <input id='department-id' name='department-id' type='hidden' value='@Model["department"].GetId()'>
+  <label for='course-id'>Select a course</label>
+  <select id='course-id' name='course-id' type='text'>
+    @foreach (var course in @Model["allCourses"])
+    {
+      <option value='@course.GetId()'>@course.GetName()</option>
+    }
+  </select>
+  <button type='submit'>Add</button>
+</form>
