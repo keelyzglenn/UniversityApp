@@ -38,6 +38,38 @@ namespace University
         }
 
 
+        [Fact]
+        public void Test_SaveAssignsIdToObject()
+        {
+            //Arrange
+            Student firstStudent = new Student("Jerry", "03/01/2012");
+            firstStudent.Save();
+
+            //Act
+            Student savedStudent = Student.GetAll()[0];
+
+            int result = savedStudent.GetId();
+            int testId = firstStudent.GetId();
+
+            //Assert
+            Assert.Equal(testId, result);
+        }
+
+        [Fact]
+        public void Test_FindFindsStudentInDatabase()
+        {
+            //Arrange
+            Student firstStudent = new Student("Jerry", "03/01/2012");
+            firstStudent.Save();
+
+            //Act
+            Student result = Student.Find(firstStudent.GetId());
+
+            //Assert
+            Assert.Equal(firstStudent, result);
+        }
+
+
         public void Dispose()
         {
             Student.DeleteAll();
