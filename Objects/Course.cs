@@ -186,7 +186,7 @@ namespace University
 
             cmd.ExecuteNonQuery();
 
-            if (conn != null);
+            if (conn != null)
             {
                 conn.Close();
             }
