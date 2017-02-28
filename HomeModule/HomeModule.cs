@@ -66,6 +66,20 @@ namespace University
                 return View["student.cshtml", model];
             };
 
+            Post["student/add_course"] = _ => {
+               Course course = Course.Find(Request.Form["course-id"]);
+               Student student = Student.Find(Request.Form["student-id"]);
+               student.AddCourse(course);
+               return View["success.cshtml"];
+           };
+
+           Post["course/add_student"] = _ => {
+               Student student = Student.Find(Request.Form["student-id"]);
+               Course course = Course.Find(Request.Form["course-id"]);
+               course.AddStudent(student);
+               return View["success.cshtml"];
+           };
+
         }
     }
 }
