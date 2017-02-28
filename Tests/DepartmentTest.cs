@@ -54,39 +54,59 @@ namespace University
             Assert.Equal(testId, result);
         }
 
-        // [Fact]
-        // public void Test_FindFindsDepartmentInDatabase()
-        // {
-        //     //Arrange
-        //     Course firstCourse = new Course("History", "100");
-        //     firstCourse.Save();
-        //
-        //     //Act
-        //     Course result = Course.Find(firstCourse.GetId());
-        //
-        //     //Assert
-        //     Assert.Equal(firstCourse, result);
-        // }
-        //
-        // [Fact]
-        // public void Test_AddStudent_AddsStudentToCourse()
-        // {
-        //     //Arrange
-        //     Course testCourse = new Course("History", "100");
-        //     testCourse.Save();
-        //
-        //     Student testStudent = new Student("Jerry", "03/01/2012");
-        //     testStudent.Save();
-        //
-        //     //Act
-        //     testCourse.AddStudent(testStudent);
-        //
-        //     List<Student> result = testCourse.GetStudents();
-        //     List<Student> testList = new List<Student>{testStudent};
-        //
-        //     //Assert
-        //     Assert.Equal(testList, result);
-        // }
+        [Fact]
+        public void Test_FindFindsDepartmentInDatabase()
+        {
+            //Arrange
+            Department firstDepartment = new Department("History");
+            firstDepartment.Save();
+
+            //Act
+            Department result = Department.Find(firstDepartment.GetId());
+
+            //Assert
+            Assert.Equal(firstDepartment, result);
+        }
+
+        [Fact]
+        public void Test_AddStudent_AddsStudentToDepartment()
+        {
+            //Arrange
+            Department testDepartment = new Department("History");
+            testDepartment.Save();
+
+            Student testStudent = new Student("Jerry", "03/01/2012");
+            testStudent.Save();
+
+            //Act
+            testDepartment.AddStudent(testStudent);
+
+            List<Student> result = testDepartment.GetStudents();
+            List<Student> testList = new List<Student>{testStudent};
+
+            //Assert
+            Assert.Equal(testList, result);
+        }
+
+        [Fact]
+        public void Test_AddCourse_AddsCourseToDepartment()
+        {
+            //Arrange
+            Department testDepartment = new Department("History");
+            testDepartment.Save();
+
+            Course testCourse = new Course("History", "100");
+            testCourse.Save();
+
+            //Act
+            testDepartment.AddCourse(testCourse);
+
+            List<Course> result = testDepartment.GetCourses();
+            List<Course> testList = new List<Course>{testCourse};
+
+            //Assert
+            Assert.Equal(testList, result);
+        }
 
         public void Dispose()
         {
