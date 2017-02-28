@@ -95,6 +95,7 @@ namespace University
         {
             Student.DeleteAll();
             Course.DeleteAll();
+            Department.DeleteAll();
         }
     }
 }
