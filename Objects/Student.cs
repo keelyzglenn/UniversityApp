@@ -165,6 +165,69 @@ namespace University
             return foundStudent;
         }
 
+        public void AddCourse(Course newCourse)
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("INSERT INTO courses_students (course_id, student_id) VALUES (@CourseId, @StudentId)", conn);
+
+            SqlParameter courseIdParameter = new SqlParameter();
+            courseIdParameter.ParameterName = "@CourseId";
+            courseIdParameter.Value = newCourse.GetId();
+            cmd.Parameters.Add(courseIdParameter);
+
+            SqlParameter studentIdParameter = new SqlParameter();
+            studentIdParameter.ParameterName = "@StudentId";
+            studentIdParameter.Value = this.GetId();
+            cmd.Parameters.Add(studentIdParameter);
+
+            cmd.ExecuteNonQuery();
+
+            if (conn != null);
+            {
+                conn.Close();
+            }
+        }
+
+        public List<Course> GetCourses()
+        {
+            SqlConnection conn = DB.Connection();
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT courses.* FROM students JOIN courses_students ON (students.id = courses_students.student_id) JOIN courses ON (courses_students.course_id = courses.id) WHERE students.id = @StudentId;", conn);
+            SqlParameter studentIdParameter = new SqlParameter();
+            studentIdParameter.ParameterName = "@StudentId";
+            studentIdParameter.Value = this.GetId().ToString();
+
+            cmd.Parameters.Add(studentIdParameter);
+
+            SqlDataReader rdr = cmd.ExecuteReader();
+
+            List<Course> courses = new List<Course> {};
+
+            while(rdr.Read())
+            {
+                int courseId = rdr.GetInt32(0);
+                string courseName = rdr.GetString(1);
+                string courseNumber = rdr.GetString(2);
+
+                Course newCourse = new Course(courseName, courseNumber, courseId);
+                courses.Add(newCourse);
+            }
+            if (rdr != null)
+            {
+              rdr.Close();
+            }
+            if (conn != null)
+            {
+              conn.Close();
+            }
+            return courses;
+
+        }
+
+
         public static void DeleteAll()
       {
           SqlConnection conn = DB.Connection();

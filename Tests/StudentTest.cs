@@ -69,6 +69,27 @@ namespace University
             Assert.Equal(firstStudent, result);
         }
 
+        [Fact]
+        public void Test_AddCourse_AddsCourseToStudent()
+        {
+            //Arrange
+            Student testStudent = new Student("Jerry", "03/01/2012");
+            testStudent.Save();
+
+            Course testCourse = new Course("History", "100");
+            testCourse.Save();
+
+            //Act
+            testStudent.AddCourse(testCourse);
+
+            List<Course> result = testStudent.GetCourses();
+            List<Course> testList = new List<Course>{testCourse};
+
+            //Assert
+            Assert.Equal(testList, result);
+        }
+
+
 
         public void Dispose()
         {
